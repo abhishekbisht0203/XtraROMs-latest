@@ -1,0 +1,322 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TFKNBPWNS5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-TFKNBPWNS5");
+  </script>
+
+  <!-- Google Sign-In Client ID -->
+  <meta name="google-signin-client_id"
+    content="181248088073-lh3mnt1d264iltq7sepgec17qu9b3d11.apps.googleusercontent.com" />
+
+  <!-- Meta Description and Keywords -->
+  <meta name="description"
+    content="XtraROMs is your ultimate destination for custom ROMs, offering a wide range of custom Android ROMs for various devices. Explore the latest ROMs and enhance your Android experience." />
+  <meta name="keywords"
+    content="XtraROMs, custom ROMs, Android ROMs, ROM downloads, Android customization, smartphone firmware, custom firmware, Android modding, Android development, Lineage OS, Arrow OS, Evolution X, magisk, Modules, Mods, Root, Su" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{% static 'images/xlogo.jpg' %}" />
+  <meta property="og:image" content="{% static 'images/xlogo.jpg' %}" itemprop="thumbnailUrl" />
+
+  <link rel="stylesheet" href="{% static 'output.css' %}">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?&family=Poppins&family=Space+Grotesk&family=Kurale&family=Nunito+Sans&family=Averia+Gruesa+Libre&family=Courgette&family=Delius+Swash+Caps&family=Karla:ital,wght@0,200..800;1,200..800&family=Snippet&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+    integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  {% block css %}
+  <style>
+  </style>
+  {% endblock css %}
+
+  <title>XtraROMs</title>
+</head>
+
+<body class="mt-20 bg-[var(--background)]">
+  <!-- Navigation Bar -->
+  <section class="container mx-auto w-full fixed top-0 z-20">
+    <nav class="bg-transparent backdrop-blur-xl">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="{% url 'home' %}" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <img src="{% static 'images/xlogo.jpg' %}" class="h-10 rounded-full" alt="XtraROMs Logo" />
+        </a>
+        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          {% if request.user.is_authenticated %}
+          <button type="button"
+            class="flex items-center gap-2 text-sm bg-[var(--primary-200)] backdrop-blur-sm shadow-lg border-1 border-[var(--accent)] rounded-full md:me-0 py-1 px-2"
+            id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+            data-dropdown-placement="bottom">
+            <i class="fa-solid fa-caret-down text-lg text-[var(--text)]"></i>
+            <span class="sr-only">Open user menu</span>
+            <img class="w-8 h-8 object-cover rounded-full" src="{{request.user.userprofile.profile_picture.url}}"
+              alt="user photo" />
+          </button>
+          {% else %}
+          <a href="{% url 'login' %}">
+            <button type="button"
+              class="flex items-center gap-2 text-sm border-2 border-[var(--text)] bg-[var(--primary-200)] backdrop-blur-sm shadow-lg border-1 border-[var(--accent)] rounded-full md:me-0 py-1 px-2"
+              id="user-menu-button">
+              <span class="sr-only">Open user menu</span>
+              <i class="fa-solid fa-caret-down text-lg text-[var(--text)]"></i>
+              <img class="w-8 h-8 object-cover rounded-full" src="{% static 'images/akatsuki_logo.png' %}"
+                alt="user photo" /></button></a>
+          {% endif %}
+          <!-- Dropdown menu -->
+          <div
+            class="z-50 hidden my-4 text-base list-none bg-[var(--secondary-100)] border border-[var(--accent)] divide-y divide-[var(--primary-500)] rounded-lg shadow"
+            id="user-dropdown">
+            <div class="px-4 py-3">
+              <span class="block text-sm text-[var(--text)]">{{ request.user.username }}</span>
+              <span class="block text-sm text-[var(--text)] truncate">{{ request.user.email }}</span>
+            </div>
+            <ul class="py-2" aria-labelledby="user-menu-button">
+              <li>
+                <a href="{% url 'dashboard' %}"
+                  class="block px-4 py-2 text-sm text-[var(--text)] hover:bg-[var(--accent-200)] font-light">Dashboard</a>
+              </li>
+              {% if request.user.is_superuser %}
+              <li>
+                <a href="{% url 'admin:index' %}"
+                  class="block px-4 py-2 text-sm text-[var(--text)] hover:bg-[var(--accent-200)] font-light">Admin</a>
+              </li>
+              {% endif %}
+              <li>
+                <a href=""
+                  class="block px-4 py-2 text-sm text-[var(--text)] hover:bg-[var(--accent-200)] font-light">Sign
+                  out</a>
+              </li>
+            </ul>
+          </div>
+
+          <button data-collapse-toggle="navbar-user" type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-[var(--background-700)] rounded-lg lg:hidden lg:hover:bg-[var(--secondary-800)] lg:hover:text-[var(--background-300)]"
+            aria-controls="navbar-user" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M1 1h15M1 7h15M1 13h15" />
+            </svg>
+          </button>
+        </div>
+        <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1 " id="navbar-user">
+          <ul
+            class="font-['Exo 2'] text-lg flex flex-col font-bold text-[var(--text-800)] p-4 md:p-0 mt-4 border border-[var(--secondary)] opacity-50 md:opacity-100 rounded-lg md:rounded-full bg-[var(--background)] md:bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+            <li>
+              <h2>
+                <a href="{% url 'home' %}"
+                  class="block py-2 px-3 rounded md:hover:backdrop-blur-sm md:hover:bg-[var(--accent)] hover:text-[var(--background)] md:hover:shadow-md md:hover:rounded-full">Home</a>
+              </h2>
+            </li>
+            <li>
+              <h2>
+                <a href="{% url 'roms' %}"
+                  class="block py-2 px-3 rounded md:hover:backdrop-blur-sm md:hover:bg-[var(--accent)] hover:text-[var(--background)] md:hover:shadow-md md:hover:rounded-full">Custom
+                  Roms</a>
+              </h2>
+            </li>
+            <li>
+              <h2>
+                <a href="{% url 'mods' %}"
+                  class="block py-2 px-3 rounded md:hover:backdrop-blur-sm md:hover:bg-[var(--accent)] hover:text-[var(--background)] md:hover:shadow-md md:hover:rounded-full">Mods/Tools</a>
+              </h2>
+            </li>
+            <li>
+              <h2>
+                <a href="{% url 'xtraknowledge' %}"
+                  class="block py-2 px-3 rounded md:hover:backdrop-blur-sm md:hover:bg-[var(--accent)] hover:text-[var(--background)] md:hover:shadow-md md:hover:rounded-full">XtraKnowledge</a>
+              </h2>
+            </li>
+            {% if not request.user.is_authenticated %}
+            <li>
+              <h2>
+                <a href="{% url 'signup' %}"
+                  class="block py-2 px-3 rounded md:hover:backdrop-blur-sm md:hover:bg-[var(--accent)] hover:text-[var(--background)] md:hover:shadow-md md:hover:rounded-full">Signup</a>
+              </h2>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </section>
+
+  {% block content %} {% endblock content %}
+
+  <!-- Footer -->
+  <footer class="glass rounded-t-xl shadow">
+    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+      <div class="sm:flex sm:items-center sm:justify-between">
+        <a href="/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+          <img src="{% static 'images/xlogo.jpg' %}" class="h-8 rounded-3xl" alt="Flowbite Logo" />
+          <span class="self-center text-[var(--text)] text-2xl font-semibold whitespace-nowrap">XtraROMs</span>
+        </a>
+        <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-[var(--text-800)] sm:mb-0">
+          <li>
+            <a href="#" class="hover:underline me-4 md:me-6">About</a>
+          </li>
+          <li>
+            <a href="{% url 'policy' %}" class="hover:underline me-4 md:me-6">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
+          </li>
+          <li>
+            <a href="#" class="hover:underline">Contact</a>
+          </li>
+        </ul>
+      </div>
+      <hr class="my-6 border-gray-200 sm:mx-auto lg:my-8" />
+      <span class="block text-sm text-[var(--text-700)] sm:text-center">© 2024 <a href="/"
+          class="hover:underline">XtraROMs</a>. Made with
+        Love By Siddharth Tiwari.</span>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="fixed top-20 right-0 z-50 p-4"></div>
+  <div id="cursor" class="Cursor"></div>
+
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"
+    integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+    integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    var messages = JSON.parse("{{ serialized_messages|escapejs }}");
+    if (messages.length > 0) {
+      messages.forEach(function (message) {
+        if (message.level == "error") {
+          console.log(message);
+          var toast = `
+        <div id="toast-success-${message.message.length}" class="flex items-center w-full max-w-xs p-4 mb-4 text-[var(--text)] bg-[var(--secondary)] rounded-lg shadow border-2 border-[var(--primary)]" role="alert">
+          <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+            </svg>
+            <span class="sr-only">Error icon</span>
+        </div>
+          <div class="ms-3 text-sm font-normal">${message.message}</div>
+          <button type="button" class="ms-3 -mx-1.5 -my-1.5 text-[var(--text)] hover:text-[var(--background)] rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 -300hover:bg-[var(--accent)] inline-flex items-center justify-center h-8 w-8 " data-dismiss-target="#toast-success-${message.message.length}" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+          </button>
+      </div>`;
+
+          // Append the toast to the toast container
+          document.getElementById("toast-container").innerHTML += toast;
+        } else {
+          
+          var toast = `
+        <div id="toast-success-${message.message.length}" class="flex items-center w-full max-w-xs p-4 mb-4 text-[var(--text)] bg-[var(--secondary)] rounded-lg shadow border-2 border-[var(--primary)]" role="alert">
+          <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+              </svg>
+              <span class="sr-only">Check icon</span>
+          </div>
+          <div class="ms-3 text-sm font-normal">${message.message}</div>
+          <button type="button" class="ms-3 -mx-1.5 -my-1.5 text-[var(--text)] hover:text-[var(--background)] rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 -300hover:bg-[var(--accent)] inline-flex items-center justify-center h-8 w-8 " data-dismiss-target="#toast-success-${message.message.length}" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+          </button>
+      </div>`;
+
+          // Append the toast to the toast container
+          document.getElementById("toast-container").innerHTML += toast;
+        }
+      });
+    }
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Select all elements with the 'lazyload' class
+      var lazyloadImages = document.querySelectorAll('.lazyload');
+
+      function lazyload() {
+        var scrollTop = window.pageYOffset;
+        lazyloadImages.forEach(function (img) {
+          if (img.offsetTop < (window.innerHeight + scrollTop)) {
+            // Load the image by setting its 'src' attribute to the value of its 'data-src' attribute
+            img.src = img.dataset.src;
+            // Add the 'lazyloaded' class to trigger the CSS transition
+            img.classList.add('lazyloaded');
+            // Remove the 'lazyload' class
+            img.classList.remove('lazyload');
+          }
+        });
+
+        // Remove scroll, resize, and orientation change event listeners if all images are loaded
+        if (document.querySelectorAll('.lazyload').length === 0) {
+          document.removeEventListener("scroll", lazyload);
+          window.removeEventListener("resize", lazyload);
+          window.removeEventListener("orientationChange", lazyload);
+        }
+      }
+
+      // Add a delay before starting lazy loading
+      setTimeout(function () {
+        // Call the lazyload function after the delay
+        lazyload();
+
+        // Add event listeners for scroll, resize, and orientation change events to trigger lazy loading
+        document.addEventListener("scroll", lazyload);
+        window.addEventListener("resize", lazyload);
+        window.addEventListener("orientationChange", lazyload);
+      }, 1000);
+
+      // Add 'load' event listeners to lazyloaded images to trigger CSS transition
+      lazyloadImages.forEach(function (img) {
+        img.addEventListener('load', function () {
+          img.classList.add('lazyloaded');
+        });
+      });
+
+      // Add 'error' event listeners to handle image loading errors
+      lazyloadImages.forEach(function (img) {
+        img.addEventListener('error', function () {
+          console.error('Error loading image:', img);
+        });
+      });
+    });
+  </script>
+  {% block script %} {% endblock script %}
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+    @media (min-width:777px){
+    /* Custom scrollbar */
+    .manage-users ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    .manage-users ::-webkit-scrollbar-track {
+        background: var(--primary);
+        border-radius: 10px;
+        /* Light grey */
+    }
+
+    /* Handle */
+    .manage-users ::-webkit-scrollbar-thumb {
+        background: var(--secondary-600);
+        border-radius: 10px;
+        /* Grey */
+    }
+
+    /* Handle on hover */
+    .manage-users ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+        /* Dark grey */
+    }
+}
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container py-5 h-screen">
+    <h1 class="text-center mb-5 text-3xl font-bold">Manage User Profiles</h1>
+    <div class="flex justify-evenly">
+        <div class="w-full md:w-8/12 manage-users">
+            <div class="glass rounded-lg h-[80vh] md:h-[70vh] overflow-y-auto overflow-x-hidden  mx-4">
+                <table class="w-full text-sm text-left rtl:text-right text-[var(--text-500)]">
+                    <thead class="sticky top-0 text-xs text-[var(--text-800)] uppercase bg-[var(--secondary-200)]">
+                        <tr>
+                            <th class="px-4 py-2">Username</th>
+                            <th class="px-4 py-2">Authorization</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="">
+                        {% for profile in users %}
+                        <tr
+                            class="bg-[var(--secondary-500)] text-[var(--text-100)] hover:text-[var(--text-800)] border-b hover:bg-[var(--secondary-200)]">
+                            <td scope="row" class="px-6 py-4 font-semibold whitespace-nowrap">
+                                {{ profile.user.username }}
+                            </td>
+                            {% if profile.is_authorized %}
+                            <td class="px-4 py-2">Authorized</td>
+                            {% else %}
+                            <td class="px-4 py-2">UnAuthorized</td>
+                            {% endif %}
+                            <td class="px-4 py-2">
+                                {% if profile.is_authorized %}
+                                <a href="" onclick='submit("{{profile.id}}")'>Unauthorize</a>
+                                {% else %}
+                                <a href="" onclick='submit("{{profile.id}}")'>Authorize</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    function submit(profile_id) {
+        axios.post(
+            "{% url 'manage_users' %}",
+            { id: profile_id },
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+            })
+            .then(response => {
+                console.log(response)
+                if (response.data.success) {
+                    location.reload()
+                }
+            })
+    }
+</script>
+{% endblock script %}

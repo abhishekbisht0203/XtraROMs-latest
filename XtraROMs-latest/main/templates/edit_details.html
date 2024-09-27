@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container py-5 mt-20 text-[var(--text)]">
+    <h1 class="text-center mb-5 text-4xl font-bold">Editing {{ blog.title }}</h1>
+    <div class="flex justify-center">
+        <div class="w-full md:w-1/2">
+            <div class="glass">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-center text-2xl font-bold">Do The Required Changes</h2>
+                </div>
+                <div class="p-6">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ edit_form|crispy }}
+                        <input type="hidden" name="mod_id" value="{{ blog_id }}">
+                        <button type="submit" class="w-full py-2 mt-4 bg-[var(--primary)] rounded-md hover:bg-[var(--accent)]">
+                            Update
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

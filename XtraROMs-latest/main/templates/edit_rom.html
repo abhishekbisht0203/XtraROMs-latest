@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container py-5 mt-20 text-[var(--text)]">
+  <h1 class="text-center mb-5 text-4xl font-bold">Editing {{ rom.name }}</h1>
+  <div class="flex justify-center">
+    <div class="w-full md:w-1/2">
+      <div class="glass">
+        <div class="p-2">
+          <form action="{% url 'edit_rom' rom.slug %}" method="post" , enctype="multipart/form-data"
+            class="max-w-lg mx-auto mt-8 p-4 md:p-5">
+            {% csrf_token %}
+            <div class="flex gap-2 min-w-full">
+              <div class="mb-4">
+                <label for="id_name" class="text-sm font-medium text-[var(--text)]">Name</label>
+                {{ edit_form.name }}
+              </div>
+              <div class="mb-4">
+                <label for="id_android" class="text-sm font-medium text-[var(--text)]">Android Version</label>
+                {{ edit_form.android }}
+              </div>
+            </div>
+            <div class="mb-4 flex flex-col">
+              <label for="id_device" class="text-sm font-medium text-[var(--text)]">Device</label>
+              {{ edit_form.device }}
+            </div>
+            <div class="mb-4">
+              <label for="id_credits" class="text-sm font-medium text-[var(--text)]">Credits</label>
+              {{ edit_form.credits }}
+            </div>
+            <div class="mb-4 truncate">
+              <label for="id_image" class="text-sm font-medium text-[var(--text)]">Image</label>
+              {{ edit_form.image }}
+            </div>
+            <div class="mb-4">
+              <label for="id_link" class="text-sm font-medium text-[var(--text)]">Link</label>
+              {{ edit_form.link }}
+            </div>
+            <div class="mb-4">
+              <label for="id_details" class="text-sm font-medium text-[var(--text)]">Details (Can use markdown)</label>
+              {{ edit_form.details }}
+            </div>
+            <button type="submit"
+              class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
+              Upload
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('.select2').select2({
+      placeholder: 'Choose Devices',
+      allow_clear: true
+    });
+  });
+
+</script>
+
+{% endblock script%}

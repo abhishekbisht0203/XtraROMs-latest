@@ -1,0 +1,298 @@
+{% extends 'base.html' %} {% load static %} {% load custom_filters %}
+{% block css %}
+<style>
+  .hero {
+    background: var(--secondary);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .c {
+    color: #7ee4b3
+  }
+</style>
+{% endblock css %}
+{% block content %}
+
+<!-- Hero Section -->
+
+<!-- <section class="mt-56 mb-40 md:mb-0 md:mt-0 ">
+  <div
+    class="flex justify-center text-center items-center md:h-screen">
+    <div class="relative w-full md:w-1/2 mb-10 md:mb-8 hero mx-6 py-4 rounded-2xl px-0 md:px-4 h-fit">
+      <div class="absolute -top-32 md:-top-20 right-6 md:-right-32 text-5xl hero rounded-2xl shadow-md z-0 origin-center rotate-12"><i class="p-6 fa-brands fa-telegram"></i></div>
+      <div class="absolute -top-32 md:-top-20 left-6 md:-left-32 text-5xl hero rounded-2xl shadow-md z-0 origin-center -rotate-12"><i class="p-6 fa-brands fa-github"></i></div>
+      <div class="absolute -bottom-32 md:-bottom-20 right-6 md:-right-32 text-5xl hero rounded-2xl shadow-md z-0 origin-bottom -rotate-12"><i class="p-4 fa-solid fa-code"></i></div>
+      <div class="absolute -bottom-32 md:-bottom-20 left-6 md:-left-32 text-5xl hero rounded-2xl shadow-md z-0 origin-bottom rotate-12"><i class="p-4 fa-solid fa-terminal"></i></div>
+
+      <div class="mb-6 z-10">
+        <h2 class="text-6xl lg:text-8xl mb-4 text-[var(--text)] font-semibold"><span>Xtra</span><span class="text-green-800">ROMs</span></h2>
+        <p class="text-md md:text-xl px-5 md:px-0 font-light leading-relaxed text-[var(--text-800)] tracking-wide">
+          A site full of customizations and eye-candy you have never seen before! You can find ROMs that can either give
+          you performance, or give you customizations - you choose! You can find Modules that can either be
+          overclocking, adding customization, A.I. and so much more!
+        </p>
+      </div>
+      <div class="">
+        <a href="{% url 'mods' %}">
+          <button class="py-2 px-3 rounded-full text-gray-900 text-lg bg-[#36ae9060]">
+            Let's Customize <i class="fas fa-arrow-right"></i>
+          </button></a>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="h-[80vh] md:h-[90vh] flex flex-col-reverse md:flex-row items-center justify-center p-6 md:p-10 gap-4">
+  
+  <div class="md:basis-2/5">
+    <div class="md:mb-6 z-10">
+      <h2 class="text-6xl lg:text-8xl text-[var(--text)] font-semibold mb-4 md:mb-6"><span>Xtra</span><span
+          class="text-[var(--accent)]">ROMs</span></h2>
+      <p class="text-xl font-light leading-relaxed text-[var(--text-800)] tracking-wide mb-4 md:mb-6">
+        A site full of customizations and eye-candy you have never seen before! You can find ROMs that can either give
+        you performance, or give you customizations - you choose! You can find Modules that can either be
+        overclocking, adding customization, A.I. and so much more!
+      </p>
+    </div>
+    <div class="">
+      <a href="{% url 'mods' %}">
+        <button class="py-2 px-3 flex gap-2 items-center justify-center rounded-full font-semibold text-lg text-[var(--background-50)] bg-[var(--primary)] hover:bg-[var(--accent)]">
+          <span>Let's Customize</span> <i class="fas fa-arrow-right"></i>
+        </button></a>
+    </div>
+  </div>
+  <div class=" md:basis-1/6">
+    <div class="">
+      <svg width="200px" height="200px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>android_line</title>
+        <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Brand" transform="translate(-96.000000, -0.000000)" fill-rule="nonzero">
+            <g id="android_line" transform="translate(96.000000, 0.000000)">
+              <path
+                d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z"
+                id="MingCute" fill-rule="nonzero">
+
+              </path>
+              <path
+                d="M12,3 C13.3298,3 14.5838,3.32446 15.6872,3.89854 L16.2929,3.29289 C16.6834,2.90237 17.3166,2.90237 17.7071,3.29289 C18.0976,3.68342 18.0976,4.31658 17.7071,4.70711 L17.3564,5.05779 C18.9797,6.52196 20,8.64183 20,11 L20,19 C20,20.6569 18.6569,22 17,22 L7,22 C5.34315,22 4,20.6569 4,19 L4,11 C4,8.64183 5.02032,6.52196 6.64358,5.05779 L6.29289,4.70711 C5.90237,4.31658 5.90237,3.68342 6.29289,3.29289 C6.68342,2.90237 7.31658,2.90237 7.70711,3.29289 L8.31276,3.89854 C9.41616,3.32446 10.6702,3 12,3 Z M18,14 L6,14 L6,19 C6,19.5523 6.44772,20 7,20 L17,20 C17.5523,20 18,19.5523 18,19 L18,14 Z M12,5 C8.76160159,5 6.12242817,7.56557346 6.00413847,10.7750616 L6,11 L6,12 L18,12 L18,11 C18,7.68629 15.3137,5 12,5 Z M9,8 C9.55228,8 10,8.44772 10,9 C10,9.55228 9.55228,10 9,10 C8.44772,10 8,9.55228 8,9 C8,8.44772 8.44772,8 9,8 Z M15,8 C15.5523,8 16,8.44772 16,9 C16,9.55228 15.5523,10 15,10 C14.4477,10 14,9.55228 14,9 C14,8.44772 14.4477,8 15,8 Z"
+                id="形状" fill="var(--accent)">
+
+              </path>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Recently Added -->
+<section class="recent container mx-auto mt-24 md:mt-8 ">
+  <h2 class="text-center text-4xl text-[var(--text)] py-4 mb-8">
+    Recently Added
+  </h2>
+  <div class="pt-8 md:pt-0 px-8 md:px-0 flex flex-wrap justify-center items-center gap-8 lg:gap-32">
+    {% for rom in roms %}
+    <a href="{% url 'rom_details' rom.slug %}">
+      <div
+        class="max-w-80 bg-[var(--secondary)] md:backdrop-blur-sm rounded-xl shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+        <img class="w-full rounded-lg cursor-pointer object-cover min-h-40 max-h-40 min-w-80 max-w-80"
+          src="{{ rom.image.url }}" alt="">
+        <div class="p-4 justify-between gap-32 md:gap-0">
+          <div>
+            <h1
+              class="text-2xl text-left font-bold text-[var(--text)] cursor-pointer transition duration-100 truncate">
+              {{ rom.name }}</h1>
+          </div>
+          <div class="flex space-x-2 justify-between">
+            <div>
+              <span class="text-[var(--text-800)]">
+                By {{ rom.credits.name }}
+              </span>
+            </div>
+            <div class="flex space-x-2">
+              <div class="flex space-x-1 items-center">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[var(--text-700)] cursor-pointer"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </span>
+                <span class="text-[var(--text-800)]">
+                  {% if rom.id in comment.keys %}
+                  {{ comment|get_key:rom.id }}
+                  {% endif %}</span>
+              </div>
+              <div class="flex space-x-1 items-center">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7 text-red-500 hover:text-red-400 transition duration-100 cursor-pointer"
+                    viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                      clip-rule="evenodd" />
+                  </svg>
+                </span>
+                <span class="text-[var(--text-800)]">
+                  {% if rom.id in likes.keys %}
+                  {{ likes|get_key:rom.id }}
+                  {% endif %}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+</section>
+
+<!-- Screenshot Section -->
+<section id="Screenshot" style="margin-top: 50px; margin-bottom: 50px" class="container p-2 mx-auto">
+  <h2 class="text-center text-4xl pt-4 text-[var(--text)]">Screenshots</h2>
+  <div id="Screenshot-1">
+    <div class="flex flex-row gap-5 px-4" style="margin-top: 50px">
+      <div class="flex justify-center items-center w-1/2">
+        <img class=" h-96" src="{% static 'images/ss1.png' %}" data-aos="fade-left" data-aos-duration="600" />
+      </div>
+      <div class="text-odd w-1/2 px-0 md:px-4 lg:px-10 text-md md:text-lg lg:text-2xl flex flex-col items-center justify-center" data-aos="fade-right" data-aos-duration="600">
+        <h3 class="text-xl md:text-2xl lg:text-4xl mb-8"><strong> Customize your Homescreen </strong></h3>
+        <p>
+          Using mods for homescreen customization elevates personalization.
+          Unlock custom widgets, unique icons, and advanced theming for a unique
+          digital space that mirrors your style. Whether minimalistic or
+          vibrant, mods empower you to perfect your device's homescreen.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div id="Screenshot-2">
+    <div class="flex flex-row gap-5 px-4" style="margin-top: 50px">
+      <div class="text-even w-1/2 px-0 md:px-4 lg:px-10 text-md md:text-lg lg:text-2xl flex flex-col items-center justify-center" data-aos="fade-left" data-aos-duration="600">
+        <h3 class="text-xl md:text-2xl lg:text-4xl mb-8"><strong> Modify your LockScreen </strong></h3>
+        <p>
+          Enhance your lock screen with mods for a personalized touch. Add
+          custom widgets, unique clock styles, and background themes to
+          transform your lock screen into a reflection of your unique style and
+          preferences. Mods offer creative freedom to make your lock screen
+          truly yours.
+        </p>
+      </div>
+      <div class="flex justify-center items-center w-1/2">
+        <img class=" h-96" src="{% static 'images/ss2.png' %}" data-aos="fade-right" data-aos-duration="600" />
+      </div>
+    </div>
+  </div>
+  <div id="Screenshot-3">
+    <div class="flex flex-row gap-5 px-4" style="margin-top: 50px">
+      <div class="flex justify-center items-center w-1/2">
+        <img class=" h-96" src="{% static 'images/ss3.png' %}" data-aos="fade-left" data-aos-duration="600" />
+      </div>
+      <div class="text-odd w-1/2 px-0 md:px-4 lg:px-10 text-md md:text-lg lg:text-2xl flex flex-col items-center justify-center" data-aos="fade-right" data-aos-duration="600">
+        <h3 class="text-xl md:text-2xl lg:text-4xl mb-8"><strong> Customize your Android beyond limitations </strong></h3>
+        <p>
+          Discover the world of custom ROMs and mods to unlock the full
+          potential of your Android device. Dive into a realm of endless
+          possibilities and tailor your smartphone experience to your
+          preferences.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div id="Screenshot-4">
+    <div class="flex flex-row gap-5 px-4" style="margin-top: 50px">
+      <div class="text-even w-1/2 px-0 md:px-4 lg:px-10 text-md md:text-lg lg:text-2xl flex flex-col items-center justify-center" data-aos="fade-left" data-aos-duration="600">
+        <h3 class="text-xl md:text-2xl lg:text-4xl mb-8"><strong> Latest Android Updates Eariler </strong></h3>
+        <p>
+          Stay ahead with the latest Android updates. By staying informed and
+          proactive, you can access new features, security enhancements, and
+          performance improvements earlier, ensuring a smoother and more
+          feature-rich mobile experience.
+        </p>
+      </div>
+      <div class="flex justify-center items-center w-1/2">
+        <img class=" h-96" src="{% static 'images/ss4.png' %}" data-aos="fade-right" data-aos-duration="600" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Us -->
+<section id="about" class="py-5 text-[var(--text)]">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row items-center">
+      <div class="">
+        <img src="{% static 'images/about.png' %}" alt="Community" class="img-fluid mb-4" />
+      </div>
+      <div class="ms-4 ps-4">
+        <h2 class="text-center mb-4 text-4xl">About Us</h2>
+        <ul class="list-outside list-disc mb-4 lg:text-xl">
+          <li class="lg:mb-4">Empowering users with device customization. Discover custom ROMs and
+            Magisk modules for unique needs.</li>
+          <li class="lg:mb-4">Our community offers support, guidance, and solutions. XtraROMs
+            welcomes modders and newbies alike.</li>
+          <li class="lg:mb-4">Join us today to elevate your device experience. Unleash potential and
+            beauty, inside and out.</li>
+        </ul>
+        <p style="text-align: center; margin-top: 10px">
+          <a href="https://telegram.me/+Z7TTTtZxvt9jZGZl"
+            class="text-[var(--background)] border-2 border-[var(--text)] bg-[var(--primary)] hover:bg-[var(--accent)] focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2">Join
+            the Community</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %} {% block script %}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
+<script>
+  var swiper = new Swiper(".swiper", {
+    effect: "coverflow",
+    grabCursor: true,
+    spaceBetween: 30,
+    centeredSlides: false,
+    coverflowEffect: {
+      rotate: 0,
+      stretch: 0,
+      depth: 0,
+      modifier: 1,
+      slideShadows: false,
+    },
+    loop: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    keyboard: {
+      enabled: true,
+    },
+    mousewheel: {
+      thresholdDelta: 70,
+    },
+    breakpoints: {
+      460: {
+        slidesPerView: 3,
+      },
+      768: {
+        slidesPerView: 3,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+      1600: {
+        slidesPerView: 3.6,
+      },
+    },
+  });
+</script>
+{% endblock script %}

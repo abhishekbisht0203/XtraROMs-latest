@@ -1,0 +1,16 @@
+{
+    "name": "XtraROMs",
+    "short_name": "XtraROMs",
+    "icons": [
+      {
+        "src": "main/static/images/xlogo.png",
+        "sizes": "1024x1024",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2196f3"
+  }
+  

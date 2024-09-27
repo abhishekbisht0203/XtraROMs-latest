@@ -1,0 +1,401 @@
+{% extends 'base.html' %} {% load static %} {% load custom_filters %}
+{% block css %}
+<style>
+  .rom-cards {
+    background: var(--secondary);
+    box-shadow:
+      12.5px 12.5px 20.5px rgba(0, 0, 0, 0.15),
+      100px 100px 164px rgba(0, 0, 0, 0.075);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .rom-cards ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .rom-cards ::-webkit-scrollbar-thumb {
+    background: var(--secondary-700);
+    border-radius: 10px;
+    /* Grey */
+  }
+
+  .rom-cards ::-webkit-scrollbar-track {
+    background: var(--secondary-300);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    /* Light grey */
+  }
+
+  h2 {
+    font-family: "Snippet";
+  }
+</style>
+{% endblock css %} {% block content %}
+
+<!-- Search Bar -->
+<section class="search-bar">
+  <div>
+    <div class="flex p-2 py-6 px-4 md:px-32">
+      <div class="rom-cards items-center justify-between w-full flex rounded-full shadow-lg p-2 mb-5 sticky"
+        style="top: 5px">
+        <div>
+          <a href="{% url 'roms' %}">
+            <div class="p-2 mr-1 rounded-full hover:bg-[var(--primary-300)] cursor-pointer">
+              <svg class="h-6 w-6 text-[var(--text)]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </a>
+        </div>
+
+        <input
+          class="font-bold uppercase rounded-full border-0 w-full placeholder-[var(--text)] py-2 pl-4 text-black bg-transparent backdrop-blur-xl leading-tight focus:outline-none focus:shadow-outline lg:text-sm text-xs"
+          type="text" placeholder="Search" oninput="search(this.value)" />
+
+        <div class="bg-[var(--secondary)] p-2 hover:bg-[#36ae9080] cursor-pointer mx-2 rounded-full">
+          <svg class="w-6 h-6 text-[var(--text-900)]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+            fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Searched ROMs -->
+<section class="mb-10">
+  <div id="searched-roms" class="container px-4 md:px-32 grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-4"></div>
+</section>
+
+<!-- Rom Cards -->
+<section class="mb-10">
+  <div class="container mx-auto px-4 md:px-32 grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-4">
+    <!-- Card -->
+
+    {% for rom in roms %}
+    <div class="rom-cards max-w-sm w-full rounded-xl my-1 md:my-4">
+      <div class="flex flex-col h-64">
+        <div class="relative h-1/2 w-full mb-3">
+          <div class="absolute flex flex-col top-0 right-0 p-3">
+            {% if request.user.is_authenticated %}
+            <button
+              class="like-button bg-white hover:bg-gray-200 shadow hover:shadow-md text-red-700 rounded-full w-7 h-7 text-center p-1"
+              onclick="like('{{rom.id}}')">
+              <i id="heartIcon-{{rom.id}}"
+                class="fa-heart {% if rom.id in liked_rom_ids %}fa-solid{% else %}fa-regular{% endif %}"></i>
+            </button>
+            {% endif %}
+          </div>
+          <img data-src="{{rom.image.url}}" src="{% static 'images/xlogo.png' %}" alt="{{rom.name}}"
+            class="lazyload h-full w-full object-cover object-center rounded-t-xl" />
+        </div>
+        <div class="flex-auto justify-evenly p-2 pt-1 md:pt-0 md:p-6 h-1/2 overflow-auto">
+          <div class="flex justify-between gap-1">
+            <div>
+              <div class="w-full flex-none text-sm flex items-center text-[var(--text)]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                <span class="text-[var(--text)] whitespace-nowrap mr-3">
+                  {% if rom.id in likes.keys %} {{ likes|get_key:rom.id }} {% endif %}
+                </span><span class="mr-2 text-[var(--text)]">Likes</span>
+              </div>
+              <div class="flex items-center w-full justify-between min-w-0">
+                <h2 class="text-sm md:text-lg font-semibold mr-auto cursor-pointer text-[var(--text)] overflow-auto">
+                  {{rom.name}}
+                </h2>
+              </div>
+            </div>
+            <div>
+              <!-- Details Button -->
+              <a href="{% url 'rom_details' rom.slug %}">
+                <button
+                  class=" hover:bg-[var(--accent)] text-[var(--text)] border-2 hover:border-[var(--background)] hover:text-[var(--background)] border-[var(--text)] hover:shadow-lg rounded-full w-9 h-9 text-center p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg></button></a>
+            </div>
+          </div>
+          <div class="">
+            <div class="text-sm md:text-md text-[var(--text)] font-semibold mt-1">
+              Android: {{rom.android}}
+            </div>
+            <div class="text-sm md:text-md text-[var(--text)] font-semibold mt-1">
+              {% for device in rom.device.all %}
+              {{ device.name }} [{{ device.codename }}]{% if not forloop.last %} <br> {% endif %}
+              {% endfor %}
+            </div>
+            <div class="w-full flex-none text-sm flex items-center text-[var(--text)] my-2">
+              <p class="text-sm font-light mr-auto cursor-pointer text-[var(--text)] truncate">By {{rom.credits.name}}
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-2 text-sm font-medium justify-start mt-4">
+            <!-- Download Button-->
+            <a class="hidden lg:flex " target="_blank" href="{{rom.link}}">
+              <button
+                class="border hover:border-[var(--background)] hover:text-[var(--background)] border-2 border-[var(--text)] inline-flex items-center text-sm font-medium mb-2 md:mb-0  px-5 py-2 hover:shadow-lg tracking-wider rounded-full hover:bg-[var(--accent)]">
+
+                <span class="h-3 me-2 hidden md:flex">
+                  <i class="fa-solid fa-arrow-down"></i> </span><span class="">Download</span>
+              </button></a>
+            <a class="block lg:hidden " target="_blank" href="{{rom.link}}">
+              <button
+                class=" hover:bg-[var(--accent)] text-[var(--text)] border hover:border-[var(--background)] hover:text-[var(--background)] border-[var(--text)] hover:shadow-lg rounded-full w-9 h-9 text-center p-2">
+                <i class="fa-solid fa-download"></i>
+              </button></a>
+
+            <!-- Share Button -->
+            <button id="shareButton" onclick="shareLink('{{rom.name}}', '{{rom.slug}}')"
+              class="block  hover:bg-[var(--accent)] text-[var(--text)] border-2 hover:border-[var(--background)] hover:text-[var(--background)] border-[var(--text)] hover:shadow-lg rounded-full w-9 h-9 text-center p-2">
+              <i class="fa-solid fa-share-from-square"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <nav aria-label="Page navigation" class="flex justify-center items-center mt-6">
+    <ul class="pagination justify-center flex w-fit bg-[#ffffff30] glass rounded-lg shadow-md">
+      {% if page_obj.has_previous %}
+      <li class="page-item p-2">
+        <a class="page-link" href="?page=1" aria-label="First">
+          <i class="fas fa-angle-double-left"></i>
+        </a>
+      </li>
+      <li class="page-item p-2">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <i class="fas fa-angle-left"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled p-2">
+        <span class="page-link" aria-hidden="true">
+          <i class="fas fa-angle-double-left"></i>
+        </span>
+      </li>
+      <li class="page-item disabled p-2">
+        <span class="page-link" aria-hidden="true">
+          <i class="fas fa-angle-left"></i>
+        </span>
+      </li>
+      {% endif %}
+
+      <li class="page-item p-2">
+        <span class="page-link">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+      </li>
+
+      {% if page_obj.has_next %}
+      <li class="page-item p-2">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </li>
+      <li class="page-item p-2">
+        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+          <i class="fas fa-angle-double-right"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled p-2">
+        <span class="page-link" aria-hidden="true">
+          <i class="fas fa-angle-right"></i>
+        </span>
+      </li>
+      <li class="page-item disabled p-2">
+        <span class="page-link" aria-hidden="true">
+          <i class="fas fa-angle-double-right"></i>
+        </span>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</section>
+{% endblock content %} {% block script %}
+<script>
+  function like(romID) {
+    axios
+      .post(
+        window.location.href,
+        {
+          romID: romID,
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+        }
+      )
+      .then((response) => {
+        // Assuming you have an element for the heart icon
+        const heartIcon = document.getElementById(`heartIcon-${romID}`);
+
+        if (response.data.status === "liked") {
+          // Rom was not liked before, toggle to solid heart
+          heartIcon.classList.remove("fa-regular");
+          heartIcon.classList.add("fa-solid");
+        } else if (response.data.status === "unliked") {
+          // Rom was already liked, toggle back to regular heart
+          heartIcon.classList.remove("fa-solid");
+          heartIcon.classList.add("fa-regular");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function search(query) {
+    console.log("Searching for:", query);
+    // Make your axios request here with the complete query
+    axios
+      .get("/search_roms/", { params: { q: query } })
+      .then((response) => {
+        console.log(response.data.results);
+        roms = response.data.results;
+        const searchedRoms = document.getElementById("searched-roms");
+        searchedRoms.classList.add("border-b-2", "border-black", "pb-6");
+        searchedRoms.innerHTML = ""; // Clear previous content
+
+        if (roms.length === 0) {
+          searchedRoms.innerHTML += `<p class="fs-4 text-white text-center font-semibold">No Data found for your Search query, recheck it!</p>`
+        }
+        else {
+          roms.forEach((rom) => {
+            const romCard = `
+          <div
+      class="rom-cards max-w-sm w-full my-1 md:my-4"
+    >
+      <div class="flex flex-col h-64">
+          <div class="relative h-1/2 w-full mb-3">
+            <div class="absolute flex flex-col top-0 right-0 p-3">
+              {% if request.user.is_authenticated %}
+              <button
+                class="like-button bg-white hover:bg-gray-200 shadow hover:shadow-md text-red-700 rounded-full w-7 h-7 text-center p-1"
+                onclick="like('${rom.id}')">
+                <i id="heartIcon-${rom.id}"
+                  class="fa-heart {% if rom.id in liked_rom_ids %}fa-solid{% else %}fa-regular{% endif %}"></i>
+              </button>
+              {% endif %}
+            </div>
+            <img src="${rom.image_url}" alt="${rom.name}"
+              class="lazyload h-full w-full object-cover object-center rounded-t-xl" />
+          </div>
+          <div class="flex-auto justify-evenly p-2 pt-1 md:pt-0 md:p-6 h-1/2 overflow-auto">
+            <div class="flex justify-between">
+              <div>
+              <div class="w-full flex-none text-sm flex items-center text-[var(--text)]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                <span class="text-[var(--text)] whitespace-nowrap mr-3">
+                  ${rom.likes}
+                </span><span class="mr-2 text-[var(--text)]">Likes</span>
+              </div>
+              <div class="flex items-center w-full justify-between min-w-0">
+                <h2 class="text-lg font-semibold mr-auto cursor-pointer text-[var(--text)] line-clamp-2">
+                  ${rom.name}
+                </h2>
+              </div>
+              </div>
+              <div>
+                <!-- Details Button -->
+              <a href="/rom_detail/${rom.slug}">
+                <button
+                  class="  hover:bg-[var(--accent)] text-[var(--text)] border-2 hover:border-[var(--background)] hover:text-[var(--background)] border-[var(--text)] hover:shadow-lg rounded-full w-9 h-9 text-center p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button></a></div>
+            </div>
+            <div class="text-sm md:text-md text-[var(--text)] font-semibold mt-1 truncate">
+                Android: ${rom.android}
+            </div>
+            <div class="text-md text-[var(--text)] font-semibold mt-1">
+              ${rom.devices.map(device => `${device.name} (${device.codename})`).join('<br>')}
+            </div>
+            <div class="w-full flex-none text-sm flex items-center text-[var(--text)] my-2 truncate">
+              <p class="text-sm font-light mr-auto cursor-pointer text-[var(--text)] truncate">By ${rom.credits}</p>
+            </div>
+            <div class="flex gap-2 text-sm font-medium justify-start mt-4">
+
+              <!-- Download Button-->
+              <a href="${rom.link}" class="hidden lg:flex ">
+                <button
+                class="inline-flex border-2 border-[var(--text)] hover:border-[var(--background)] hover:text-[var(--background)] items-center text-sm font-medium mb-2 md:mb-0  px-5 py-2 hover:shadow-lg tracking-wider rounded-full hover:bg-[var(--accent)]">
+                <span class="h-3 me-2 hidden md:flex">
+                  <i class="fa-solid fa-arrow-down"></i>
+                </span><span class="">Download</span>
+              </button></a>
+              <a href="${rom.link}" class="block lg:hidden ">
+                <button
+                class=" hover:bg-[var(--accent)] text-[var(--text)] border hover:border-[var(--background)] hover:text-[var(--background)] border-2 border-[var(--text)] hover:shadow-lg rounded-full w-9 h-9 text-center p-2">
+                <i class="fa-solid fa-download"></i>
+              </button></a>
+
+              <!-- Share Button -->
+              <button id="shareButton" onclick="shareLink('${rom.name}', '${rom.slug}')"
+                class="block  hover:bg-[var(--accent)] text-[var(--text)] border-2 hover:border-[var(--background)] hover:text-[var(--background)] border-[var(--text)] hover:shadow-lg rounded-full w-9 h-9 text-center p-2">
+                <i class="fa-solid fa-share-from-square"></i>
+              </button>
+            </div>
+          </div>
+      </div>
+    </div>`;
+            searchedRoms.innerHTML += romCard;
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function shareLink(name, slug) {
+    if (navigator.share) {
+      // Web Share API is supported
+      navigator
+        .share({
+          title: name,
+          text: "Check out this link from XtraROMs!",
+          url: `/rom_detail/${slug}`,
+        })
+        .then(() => console.log("Successful share"))
+        .catch((error) => console.log("Error sharing:", error));
+    } else {
+      // Fallback for browsers that do not support Web Share API
+      const shareInput = document.createElement("input");
+      document.body.appendChild(shareInput);
+      shareInput.value = `https://${window.location.hostname}/rom_detail/${slug}`;
+      shareInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(shareInput);
+
+      alert("Link copied to clipboard!");
+    }
+  }
+</script>
+{% endblock script %}
